@@ -20,7 +20,7 @@ int main(void){
         if(!procedure[i])
         {
             if (i == 0){
-                Engine_assembly(position);
+                position = Engine_assembly(position);
             }
             if (i == 1){}
             if (i == 2){}

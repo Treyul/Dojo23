@@ -24,8 +24,8 @@ struct travel
  char* positions[4][4] = {
     // rows defination are alpabetical
     // columns are numerical
-    {"00","B4","C4","D4"},
-    {"00","B3","C3","D3"},
+    {"99","B4","C4","D4"},
+    {"99","B3","C3","D3"},
     {"A2","B2","C2","D2"},
     {"A1","00","C1","D1"},
 };
@@ -46,9 +46,10 @@ bool procedure[7] = {false,false,false,false,false,false,false};
 struct travel position;
 
 /**     Function names    */
-void Engine_assembly(struct travel pos);
+struct travel Engine_assembly(struct travel pos);
 char* Trailer_assembly(struct travel pos);
 char* Cabin_assembly(struct travel pos);
 char* Rack_assembly(struct travel pos);
 void navigation(struct travel pos);
 struct travel Update_Forward_Position(struct travel pos);
+struct travel Forward_Row_Update (struct travel pos);

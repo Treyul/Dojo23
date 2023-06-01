@@ -3,13 +3,14 @@
 #include"variables.h"
 
 // function for assembly of engine
-void Engine_assembly(struct travel pos)
+struct travel Engine_assembly(struct travel pos)
 {
     strcpy(pos.destination,Engine_Location);
     navigation(pos);
     printf("picked engine\n");
     // write the point from which the bot should approach the assemble
     strcpy(pos.destination,Car_Assembly_Location);
+
 
     // light led up to show step is done
 }
@@ -55,38 +56,135 @@ void navigation(struct travel pos)
             if (pos.current_position[1] == pos.destination[1])
             {
                 // check direction to move
-                if (pos.previous_position[0] == pos.current_position[0] && pos.previous_position[1] < pos.current_position[1])
+
+                if ( pos.previous_position[1] > pos.current_position[1])
                 {
-                    printf("Turn right...move forward\n");
-                    pos = Update_Forward_Position(pos);
-                }
-                else if (pos.previous_position[0] == pos.current_position[0] && pos.previous_position[1] > pos.current_position[1])
-                {
-                    printf("Turn left\n");
-                    /* MOVE FORWARD next junction*/
-                    strcpy(pos.current_position,"C1");
-                    strcpy(pos.previous_position,"A1");
-                }
-                else if (pos.previous_position[0] < pos.current_position[0] && pos.previous_position[1] == pos.current_position[1])
-                {
-                    printf("moveforward\n");
-                    /* next junction */
-                    pos = Update_Forward_Position(pos);
-                    printf("previousss %s, new  %s destination %s\n",pos.previous_position,pos.current_position,pos.destination);
+                    if (pos.current_position[0] > pos.destination[0])
+                    {
+                        printf("Turn right\n");
+                        /*  Move forward to next junction */
+                    }
+                    else if ( pos.current_position[0] < pos.destination[0] )
+                    {
+                        printf("Turn left\n");
+                        /*  Move forward to next junction */
+                    }
                     
-                    // strcpy(pos.current_position,"D1");
-                    // strcpy(pos.previous_position,"C1");
+                    pos = Update_Forward_Position(pos);
                 }
+                else if ( pos.previous_position[1] < pos.current_position[1] )
+                {
+                    if (pos.current_position[0] < pos.destination[0])
+                    {
+                        printf("Turn right\n");
+                        /*  Move forward to next junction */
+                    }
+                    else if ( pos.current_position[0] > pos.destination[0] )
+                    {
+                        printf("Turn left\n");
+                        /*  Move forward to next junction */
+                    }
+                    
+                    pos = Update_Forward_Position(pos);
+                }
+                else
+                {
+                    printf("forward\n");
+                    pos = Update_Forward_Position(pos);
+                }
+                // else if (pos.previous_position[0] == pos.current_position[0] && pos.previous_position[1] > pos.current_position[1])
+                // {
+                //     printf("Turn left\n");
+                //     /* MOVE FORWARD next junction*/
+                //     strcpy(pos.current_position,"C1");
+                //     strcpy(pos.previous_position,"A1");
+                // }
+                // else if (pos.previous_position[0] < pos.current_position[0] && pos.previous_position[1] == pos.current_position[1])
+                // {
+                //     printf("moveforward\n");
+                //     /* next junction */
+                //     pos = Update_Forward_Position(pos);
+                //     printf("previousss %s, new  %s destination %s\n",pos.previous_position,pos.current_position,pos.destination);
+                    
+                //     // strcpy(pos.current_position,"D1");
+                //     // strcpy(pos.previous_position,"C1");
+                // }
                 
             }
             
             // rows matching
             else if (pos.current_position[0] == pos.destination[0])
             {
-                printf("rows...\n");
+                printf("rows...%i\n", pos.previous_position[0] < pos.current_position[0]);
+                if ( pos.previous_position[0] < pos.current_position[0] )
+                {
+                    if ( pos.current_position[1] < pos.destination[1] )
+                    {
+                        /* e.g d3 -> d4  from c3*/
+                        printf("Turn left\n");
+                        /*  move forward to junction    */
+                        pos = Forward_Row_Update(pos);
+                        printf("previousss %s, new  %s destination %s\n",pos.previous_position,pos.current_position,pos.destination);
+
+                    }
+                    else if ( pos.current_position[1] > pos.destination[1] )
+                    {
+                        /* e.g d3 to d2 from c3*/
+                        printf("Turn right \n");
+                        pos = Forward_Row_Update(pos);
+                        printf("previousss %s, new  %s destination %s\n",pos.previous_position,pos.current_position,pos.destination);
+                        /*  move forward to junction    */
+
+                    }
+                }
+                else if ( pos.previous_position[0] >  pos.current_position[0] )
+                {
+                    if ( pos.current_position[1] > pos.destination[1] )
+                    {
+                        /* e.g C2 -> C1  from D2*/
+                        printf("Turn left\n");
+                        /*  move forward to junction    */
+                        pos = Forward_Row_Update(pos);
+                        printf("previousss %s, new  %s destination %s\n",pos.previous_position,pos.current_position,pos.destination);
+
+                    }
+                    else if ( pos.current_position[1] < pos.destination[1] )
+                    {
+                        /* e.g c2 to c3 from d2*/
+                        printf("Turn rightssss \n");
+                        pos = Forward_Row_Update(pos);
+                        printf("previousss %s, new  %s destination %s\n",pos.previous_position,pos.current_position,pos.destination);
+
+                        /*  move forward to junction    */
+
+                    }
+                }
+                else
+                {
+                    // forward runs
+                    pos = Forward_Row_Update(pos);
+                    printf("previouss %s, new  %s destination %s\n",pos.previous_position,pos.current_position,pos.destination);
+
+
+                }
             }
             // strcpy(pos.current_position,pos.destination);
-            
+
+            // nothing matches
+            else
+            {
+                // priority is rows to match thus ensure columns match first
+                if ( pos.current_position[0] < pos.destination[0] )
+                {
+                    // check orientation
+                    if ( pos.previous_position[0] == pos.current_position[0] )
+                    {}
+                }
+                else if ( pos.current_position[0] > pos.destination[0] )
+                {
+                    // check orientation
+                }
+            }
         }
     }
 
@@ -106,17 +204,39 @@ struct travel Update_Forward_Position(struct travel pos)
             printf("null\n");
             continue;
         }
+        
+        else if ( !strcmp(positions[matrice_index][i],"99") )
+        {
+            printf("No way\n");
+        }
+        
+        // get index
         else if ( !strcmp(positions[matrice_index][i] , pos.current_position) )
         {
             strcpy(pos.previous_position,pos.current_position);
 
-            if (!strcmp(positions[matrice_index][i+1],"00"))
+            // going
+            if ( pos.current_position[0] > pos.destination[0] )
             {
-                strcpy(pos.current_position,positions[matrice_index][i+2]);
+                if (!strcmp(positions[matrice_index][i-1],"00"))
+                {
+                    strcpy(pos.current_position,positions[matrice_index][i-2]);
+                }
+                else
+                {
+                    strcpy(pos.current_position,positions[matrice_index][i-1]);
+                }
             }
-            else
+            else if ( pos.current_position[0] < pos.destination[0] )
             {
-                strcpy(pos.current_position,positions[matrice_index][i+1]);
+                if (!strcmp(positions[matrice_index][i+1],"00"))
+                {
+                    strcpy(pos.current_position,positions[matrice_index][i+2]);
+                }
+                else
+                {
+                    strcpy(pos.current_position,positions[matrice_index][i+1]);
+                }
             }
 
             
@@ -129,3 +249,51 @@ struct travel Update_Forward_Position(struct travel pos)
 }
 
 
+struct travel Forward_Row_Update (struct travel pos)
+{
+    int row_index = abs( (pos.current_position[0] - 'A' + 0) );
+    // set the current position to the previous one
+    strcpy(pos.previous_position,pos.current_position);
+    for (int i = 0; i < 4; i++)
+    {
+        // get the index of the current position
+        if ( !strcmp( pos.current_position, positions[i][row_index]))
+        {
+            // if going to the left
+            if ( pos.current_position[1] < pos.destination[1])
+            {
+                if ( !strcmp(positions[i-1][row_index],"99") || !strcmp(positions[i-1][row_index],"00"))
+                {
+                    printf("No way\n");
+                }
+                else
+                {
+                    printf("forward\n");
+                    strcpy( pos.current_position,  positions[i-1][row_index]);
+                    break;
+                }
+            }
+
+            // going right
+            else if ( pos.current_position[1] > pos.destination[1])
+            {
+                if ( !strcmp(positions[i+1][row_index],"99") || !strcmp(positions[i+1][row_index],"00"))
+                {
+                    printf("No way\n");
+                }
+                else
+                {
+                printf("HAAA");
+                    printf("forward\n");
+                    strcpy( pos.current_position,  positions[i+1][row_index]);
+                    break;
+                }
+
+            }
+        }
+        printf("position %s",pos.current_position);
+        // position
+    }
+    
+    return pos;
+}
