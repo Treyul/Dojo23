@@ -1,45 +1,49 @@
 #include<stdio.h>
 #include<math.h>
+#include<string.h>
 #include"variables.h"
+#include"movements.h"
 
 // function for assembly of engine
 struct travel Engine_assembly(struct travel pos)
 {
     strcpy(pos.destination,Engine_Location);
-    navigation(pos);
+    pos = navigation(pos);
     printf("picked engine\n");
-    // write the point from which the bot should approach the assemble
+    
+    strcpy(pos.destination,"C1");
+    pos = navigation(pos);
     strcpy(pos.destination,Car_Assembly_Location);
-
-
+    printf("arrived to car\n");
     // light led up to show step is done
+    pos= navigation(pos);
+
+    return pos;
 }
-char* Trailer_assembly(struct travel pos)
+struct travel Upper_Right_Wheel(struct travel pos){}
+struct travel Upper_left_Wheel(struct travel pos){}
+struct travel Lower_Right_Wheel(struct travel pos){}
+struct travel Lower_Left_Wheel(struct travel pos){}
+struct travel Trailer_assembly(struct travel pos)
 {
     strcpy(pos.destination,Trailer_Location);
 }
-char* Cabin_assembly(struct travel pos)
+
+struct travel Cabin_assembly(struct travel pos)
 {
     strcpy(pos.destination,Cabin_Location);
 }
-char* Rack_assembly(struct travel pos)
+
+struct travel Rack_assembly(struct travel pos)
 {
     strcpy(pos.destination,Rack_Location);
 }
 
-void navigation(struct travel pos)
+struct travel navigation(struct travel pos)
 {
-    // get the values for the column and variables
-    char Current_column = pos.current_position[0], Current_Row = pos.current_position[1];
-    char destination_column = pos.destination[0], destination_Row = pos.destination[1];
-    char previous_column = pos.previous_position[0], previous_Row = pos.previous_position[1];
-
     // move the bot as long as the position is not the destination
     while( strcmp(pos.current_position,pos.destination) )
     {
-        // printf("comparison is showing %i",strcmp(pos.current_position,pos.destination));
-        // printf("previous %s, new  %s destination %s\n",pos.previous_position,pos.current_position,pos.destination);
-
         // check if the bot is in the start position
         if ( !strcmp(pos.current_position,"A0") && !strcmp(pos.previous_position,"A0") )
         {
@@ -56,7 +60,6 @@ void navigation(struct travel pos)
             if (pos.current_position[1] == pos.destination[1])
             {
                 // check direction to move
-
                 if ( pos.previous_position[1] > pos.current_position[1])
                 {
                     if (pos.current_position[0] > pos.destination[0])
@@ -91,25 +94,8 @@ void navigation(struct travel pos)
                 {
                     printf("forward\n");
                     pos = Update_Forward_Position(pos);
-                }
-                // else if (pos.previous_position[0] == pos.current_position[0] && pos.previous_position[1] > pos.current_position[1])
-                // {
-                //     printf("Turn left\n");
-                //     /* MOVE FORWARD next junction*/
-                //     strcpy(pos.current_position,"C1");
-                //     strcpy(pos.previous_position,"A1");
-                // }
-                // else if (pos.previous_position[0] < pos.current_position[0] && pos.previous_position[1] == pos.current_position[1])
-                // {
-                //     printf("moveforward\n");
-                //     /* next junction */
-                //     pos = Update_Forward_Position(pos);
-                //     printf("previousss %s, new  %s destination %s\n",pos.previous_position,pos.current_position,pos.destination);
-                    
-                //     // strcpy(pos.current_position,"D1");
-                //     // strcpy(pos.previous_position,"C1");
-                // }
-                
+                }                
+
             }
             
             // rows matching
@@ -167,6 +153,7 @@ void navigation(struct travel pos)
 
 
                 }
+            
             }
             // strcpy(pos.current_position,pos.destination);
 
@@ -187,11 +174,9 @@ void navigation(struct travel pos)
             }
         }
     }
-
     printf("Arrived. \n");
 
-    // char Current_Row = pos.current_position[1];
-    // char destination_Row = pos.destination[1];
+    return pos;
 }
 
 struct travel Update_Forward_Position(struct travel pos)
@@ -237,17 +222,13 @@ struct travel Update_Forward_Position(struct travel pos)
                 {
                     strcpy(pos.current_position,positions[matrice_index][i+1]);
                 }
-            }
-
-            
+            }   
             break;
         }
     }
-    printf("previous %s, new  %s destination %s\n",pos.previous_position,pos.current_position,pos.destination);
-    
+    printf("previous %s, new  %s destination %s\n",pos.previous_position,pos.current_position,pos.destination);   
     return pos;
 }
-
 
 struct travel Forward_Row_Update (struct travel pos)
 {
@@ -294,6 +275,5 @@ struct travel Forward_Row_Update (struct travel pos)
         printf("position %s",pos.current_position);
         // position
     }
-    
     return pos;
 }
