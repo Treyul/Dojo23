@@ -39,16 +39,16 @@ void reverse()
 
 void Go_right()
 {
-    Left_Motor.setSpeed(speed);
-    Right_Motor.setSpeed(speed);
+    Left_Motor.setSpeed(200);
+    Right_Motor.setSpeed(200);
     Left_Motor.run(FORWARD);
     Right_Motor.run(BACKWARD);
 }
 
 void Go_left()
 {
-    Left_Motor.setSpeed(speed);
-    Right_Motor.setSpeed(speed);
+    Left_Motor.setSpeed(200);
+    Right_Motor.setSpeed(200);
     Left_Motor.run(BACKWARD);
     Right_Motor.run(FORWARD);
 }
@@ -74,29 +74,70 @@ void conditional_stop()
 void Follow_line()
 {
     Read_InfraRed();
-
-    conditional_stop();
-    while( !Middle )
+    if ( !Middle && Far_Left && Far_Right || Right && Middle && Left )
     {
-        Read_InfraRed();
-        conditional_stop();
         Move_Forward();
-        Serial.print(Middle);
-        Serial.println("going_straight");
+
     }
-    if( Middle )
+    else if (Middle)
     {
-        // if tilted to the left should move right
-        if ( Left)
+        // // while (Middle)
+        // // {
+
+        // // }
+        // Go_left();
+    // }
+    // else if ( Middle && !Right)
+    // {
+    //     Go_right();
+    while (Middle)
+    {
+        // ERROR with ir raeding if fixed replace Right with !Left
+        if (!Right)
         {
-            Serial.println("going_right");
-            Go_left();
-        }
-        else if ( !Left )
-        {
-            Serial.println("going left");
             Go_right();
         }
-        // if tilted to the right should move left
+        else if (Right)
+        {
+            Go_left();
+        }
+        Read_InfraRed();
     }
+    }
+    else
+    {
+        Stop_Motors();
+    }
+    // conditional_stop();
+
 }
+
+// void Follow_line()
+// {
+//     Read_InfraRed();
+
+//     conditional_stop();
+//     while( !Middle )
+//     {
+//         Read_InfraRed();
+//         conditional_stop();
+//         Move_Forward();
+//         Serial.print(Middle);
+//         Serial.println("going_straight");
+//     }
+//     if( Middle )
+//     {
+//         // if tilted to the left should move right
+//         if ( Left)
+//         {
+//             Serial.println("going_right");
+//             Go_left();
+//         }
+//         else if ( !Left )
+//         {
+//             Serial.println("going left");
+//             Go_right();
+//         }
+//         // if tilted to the right should move left
+//     }
+// }
