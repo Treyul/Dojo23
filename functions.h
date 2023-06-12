@@ -49,6 +49,7 @@ struct travel navigation(struct travel pos)
         {
             printf("Start Position\n");
             printf("move forward\n");
+            Line_Following();
             strcpy(pos.current_position,"A1");
         }
 
@@ -66,11 +67,13 @@ struct travel navigation(struct travel pos)
                     {
                         printf("Turn right\n");
                         /*  Move forward to next junction */
+                        Line_Following();
                     }
                     else if ( pos.current_position[0] < pos.destination[0] )
                     {
                         printf("Turn left\n");
                         /*  Move forward to next junction */
+                        Line_Following();
                     }
                     
                     pos = Update_Forward_Position(pos);
@@ -81,11 +84,13 @@ struct travel navigation(struct travel pos)
                     {
                         printf("Turn right\n");
                         /*  Move forward to next junction */
+                        Line_Following();
                     }
                     else if ( pos.current_position[0] > pos.destination[0] )
                     {
                         printf("Turn left\n");
                         /*  Move forward to next junction */
+                        Line_Following();
                     }
                     
                     pos = Update_Forward_Position(pos);

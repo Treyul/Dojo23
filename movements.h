@@ -1,69 +1,5 @@
 #include"motor_variables.h"
 
-void Read_InfraRed()
-{
-  Far_Right = digitalRead(A1);
-  Right = digitalRead(A2);
-  Middle = digitalRead(A3);
-  Left = digitalRead(A4); 
-  Far_Left =digitalRead(A5); 
-  Serial.print(Far_Right);
-  Serial.print(Right);
-  Serial.print(Middle);
-  Serial.print(Left);
-  Serial.println(Far_Left);
-}
-
-void Stop_Motors()
-{
-    Left_Motor.run(RELEASE);
-    Right_Motor.run(RELEASE);
-}
-
-void Move_Forward()
-{
-    Left_Motor.setSpeed(speed);
-    Right_Motor.setSpeed(speed);
-    Left_Motor.run(FORWARD);
-    Right_Motor.run(FORWARD);
-    Serial.println("Forward");
-}
-
-void reverse()
-{
-    Left_Motor.setSpeed(speed);
-    Right_Motor.setSpeed(speed);
-    Left_Motor.run(BACKWARD);
-    Right_Motor.run(BACKWARD);
-}
-
-void Go_right()
-{
-    Left_Motor.setSpeed(200);
-    Right_Motor.setSpeed(200);
-    Left_Motor.run(FORWARD);
-    Right_Motor.run(BACKWARD);
-}
-
-void Go_left()
-{
-    Left_Motor.setSpeed(200);
-    Right_Motor.setSpeed(200);
-    Left_Motor.run(BACKWARD);
-    Right_Motor.run(FORWARD);
-}
-
-void Turn_Right()
-{
-    /*  Ensure that the last ir in that side has reached a line    */
-    
-}
-
-void Turn_left()
-{
-
-
-}
 void conditional_stop()
 {
     if ( !Far_Right && !Far_Left)
@@ -71,47 +7,74 @@ void conditional_stop()
         Stop_Motors();
     }
 }
-void Follow_line()
+// void Follow_line()
+// {
+//     Read_InfraRed();
+//     if ( !Middle && Far_Left && Far_Right || Right && Middle && Left )
+//     {
+//         Move_Forward();
+
+//     }
+//     else if (Middle)
+//     {
+//         // // while (Middle)
+//         // // {
+
+//     while (Middle)
+//     {
+//         // ERROR with ir raeding if fixed replace Right with !Left
+//         if (!Right)
+//         {
+//             Go_right();
+//         }
+//         else if (Right)
+//         {
+//             Go_left();
+//         }
+//         Read_InfraRed();
+//     }
+//     }
+//     else
+//     {
+//         Stop_Motors();
+//     }
+//     // conditional_stop();
+
+// }
+
+
+void Line_Following()
 {
     Read_InfraRed();
-    if ( !Middle && Far_Left && Far_Right || Right && Middle && Left )
+    if ( Far_Right or Far_Left  )
     {
-        Move_Forward();
-
+        // Serial.println("stoping");
+        Stop_Motors();
+        delay(1000);
+        Turn_left();
+        return;
     }
-    else if (Middle)
-    {
-        // // while (Middle)
-        // // {
-
-        // // }
-        // Go_left();
-    // }
-    // else if ( Middle && !Right)
+    // while () 
     // {
-    //     Go_right();
-    while (Middle)
+    if ( !Left && !Right)
     {
-        // ERROR with ir raeding if fixed replace Right with !Left
-        if (!Right)
-        {
-            Go_right();
-        }
-        else if (Right)
-        {
-            Go_left();
-        }
-        Read_InfraRed();
+        Move_Forward(pwm2);
     }
+    else if ( Left && !Right )
+    {
+        //when the left ir is on the line move left 
+        Go_left(pwm2);
+    }else if ( !Left && Right )
+    {
+        //when the right ir is on the line move right 
+        Go_right(pwm2);
     }
     else
     {
-        Stop_Motors();
+        Move_Forward(pwm2);
     }
-    // conditional_stop();
-
-}
-
+    }
+// }
 // void Follow_line()
 // {
 //     Read_InfraRed();

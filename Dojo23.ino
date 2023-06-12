@@ -1,5 +1,8 @@
 // #include<stdio.h>
 // #include<stdbool.h>
+/**TODO
+ * add 8 segment for displaying current position
+*/
 #include<string.h>
 // #include<time.h>
 #include "functions.h"
@@ -7,21 +10,44 @@
 
 void setup()
 {
+//   #define leftCorner 10
+// #define left_s 11
+// #define right_s 12
+// #define rightCorner 13
   Serial.begin(9600);
-  pinMode(A5,INPUT);
-  pinMode(A4,INPUT);
-  pinMode(A3,INPUT);
-  pinMode(A2,INPUT);
-  pinMode(A1,INPUT);
+  pinMode(13,INPUT);
+  pinMode(12,INPUT);
+  pinMode(11,INPUT);
+  pinMode(10,INPUT);
+  // pinMode(A1,INPUT);
+  pinMode(en1, OUTPUT);
+  pinMode(in1, OUTPUT);
+  pinMode(in2, OUTPUT);
+  pinMode(in3, OUTPUT);
+  pinMode(in4, OUTPUT);
+  pinMode(en2, OUTPUT);
   // strcpy(position.current_position,"A0");
   // strcpy(position.previous_position,"A0");
 }
+
+
 void loop() 
 {
     Serial.println("time_spent");
     // Read_InfraRed();
-    Follow_line();
-    // Move_Forward();
+    // Follow_line();
+    Line_Following();
+    // Turn_left();
+    // Go_left(130);
+    // Go_right(130);        
+    // delay(6000);
+    // Turn_Right();
+    // delay(6000);
+    
+    // Move_Forward(120);
+    // delay(2000);
+    // Stop_Motors();
+    // delay(2000);
     
     // clock_t begin = clock();
     // run through the array of checkers
