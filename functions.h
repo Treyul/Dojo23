@@ -2,7 +2,7 @@
 #include<math.h>
 #include<string.h>
 #include"variables.h"
-#include"movements.h"
+// #include"movements.h"
 
 // function for assembly of engine
 struct travel Engine_assembly(struct travel pos)
@@ -20,23 +20,42 @@ struct travel Engine_assembly(struct travel pos)
 
     return pos;
 }
-struct travel Upper_Right_Wheel(struct travel pos){}
-struct travel Upper_left_Wheel(struct travel pos){}
-struct travel Lower_Right_Wheel(struct travel pos){}
-struct travel Lower_Left_Wheel(struct travel pos){}
+struct travel Upper_Right_Wheel(struct travel pos)
+{
+    return pos;
+}
+
+struct travel Upper_left_Wheel(struct travel pos)
+{
+    return pos;
+}
+
+struct travel Lower_Right_Wheel(struct travel pos)
+{
+    return pos;
+}
+
+struct travel Lower_Left_Wheel(struct travel pos)
+{
+    return pos;
+}
+
 struct travel Trailer_assembly(struct travel pos)
 {
     strcpy(pos.destination,Trailer_Location);
+    return pos;
 }
 
 struct travel Cabin_assembly(struct travel pos)
 {
     strcpy(pos.destination,Cabin_Location);
+    return pos;
 }
 
 struct travel Rack_assembly(struct travel pos)
 {
     strcpy(pos.destination,Rack_Location);
+    return pos;
 }
 
 struct travel navigation(struct travel pos)
@@ -49,7 +68,7 @@ struct travel navigation(struct travel pos)
         {
             printf("Start Position\n");
             printf("move forward\n");
-            Line_Following();
+            // Line_Following();
             strcpy(pos.current_position,"A1");
         }
 
@@ -57,23 +76,26 @@ struct travel navigation(struct travel pos)
         else
         {   
             // Check for alignment of coordinates
+            
             // columns matching
             if (pos.current_position[1] == pos.destination[1])
             {
-                // check direction to move
+                // check from where the bot is from
                 if ( pos.previous_position[1] > pos.current_position[1])
                 {
                     if (pos.current_position[0] > pos.destination[0])
                     {
+                        // if column id is greater turn the right direction
                         printf("Turn right\n");
-                        /*  Move forward to next junction */
-                        Line_Following();
+                        printf("Move to the next junction\n");
+                        // Line_Following();
                     }
                     else if ( pos.current_position[0] < pos.destination[0] )
                     {
                         printf("Turn left\n");
+                        printf("Move to the next junction\n");
                         /*  Move forward to next junction */
-                        Line_Following();
+                        // Line_Following();
                     }
                     
                     pos = Update_Forward_Position(pos);
@@ -83,14 +105,16 @@ struct travel navigation(struct travel pos)
                     if (pos.current_position[0] < pos.destination[0])
                     {
                         printf("Turn right\n");
+                        printf("Move to the next junction\n");
                         /*  Move forward to next junction */
-                        Line_Following();
+                        // Line_Following();
                     }
                     else if ( pos.current_position[0] > pos.destination[0] )
                     {
                         printf("Turn left\n");
+                        printf("Move to the next junction\n");
                         /*  Move forward to next junction */
-                        Line_Following();
+                        // Line_Following();
                     }
                     
                     pos = Update_Forward_Position(pos);
@@ -113,6 +137,7 @@ struct travel navigation(struct travel pos)
                     {
                         /* e.g d3 -> d4  from c3*/
                         printf("Turn left\n");
+                        printf("Move to the next junction\n");
                         /*  move forward to junction    */
                         pos = Forward_Row_Update(pos);
                         printf("previousss %s, new  %s destination %s\n",pos.previous_position,pos.current_position,pos.destination);
@@ -122,6 +147,7 @@ struct travel navigation(struct travel pos)
                     {
                         /* e.g d3 to d2 from c3*/
                         printf("Turn right \n");
+                        printf("Move to the next junction\n");
                         pos = Forward_Row_Update(pos);
                         printf("previousss %s, new  %s destination %s\n",pos.previous_position,pos.current_position,pos.destination);
                         /*  move forward to junction    */
@@ -154,9 +180,9 @@ struct travel navigation(struct travel pos)
                 {
                     // forward runs
                     pos = Forward_Row_Update(pos);
+                    printf("Move forward out of junction\n");
+                    printf("Move to the next junction\n");
                     printf("previouss %s, new  %s destination %s\n",pos.previous_position,pos.current_position,pos.destination);
-
-
                 }
             
             }
@@ -211,10 +237,24 @@ struct travel Update_Forward_Position(struct travel pos)
                 if (!strcmp(positions[matrice_index][i-1],"00"))
                 {
                     strcpy(pos.current_position,positions[matrice_index][i-2]);
+                    if ( i - 3 >= 0 )
+                    {
+                        if ( !strcmp(positions[matrice_index][i-3],"99") )
+                        {
+                            pos = Row_Transversion(pos);
+                        }
+                    }
                 }
                 else
                 {
                     strcpy(pos.current_position,positions[matrice_index][i-1]);
+                    if ( i - 2 >= 0 )
+                    {
+                        if ( !strcmp(positions[matrice_index][i-2],"99") )
+                            {
+                                pos = Row_Transversion(pos);
+                            }
+                    }
                 }
             }
             else if ( pos.current_position[0] < pos.destination[0] )
@@ -222,63 +262,232 @@ struct travel Update_Forward_Position(struct travel pos)
                 if (!strcmp(positions[matrice_index][i+1],"00"))
                 {
                     strcpy(pos.current_position,positions[matrice_index][i+2]);
+
+                    if ( i + 3  < 4 )
+                    {
+                        if ( !strcmp(positions[matrice_index][i+3],"99") )
+                            {
+                                pos = Row_Transversion(pos);
+                            }  
+                    }
                 }
                 else
                 {
                     strcpy(pos.current_position,positions[matrice_index][i+1]);
+                    
+                    if ( i + 2 < 4 )
+                    {
+                        if ( !strcmp(positions[matrice_index][i+2],"99") )
+                            {
+                                pos = Row_Transversion(pos);
+                            }
+                    } 
                 }
             }   
             break;
         }
     }
-    printf("previous %s, new  %s destination %s\n",pos.previous_position,pos.current_position,pos.destination);   
+    printf("previous position %s, new position %s destination %s columns\n",pos.previous_position,pos.current_position,pos.destination);   
     return pos;
 }
 
 struct travel Forward_Row_Update (struct travel pos)
 {
+    // printf("indexxing...\n");
     int row_index = abs( (pos.current_position[0] - 'A' + 0) );
+
     // set the current position to the previous one
     strcpy(pos.previous_position,pos.current_position);
+
     for (int i = 0; i < 4; i++)
     {
         // get the index of the current position
         if ( !strcmp( pos.current_position, positions[i][row_index]))
         {
             // if going to the left
+            // get the current position
             if ( pos.current_position[1] < pos.destination[1])
             {
-                if ( !strcmp(positions[i-1][row_index],"99") || !strcmp(positions[i-1][row_index],"00"))
-                {
-                    printf("No way\n");
-                }
-                else
-                {
-                    printf("forward\n");
+                    // printf("forward\n");
+                    // set the current position
                     strcpy( pos.current_position,  positions[i-1][row_index]);
+
+                    printf("New position is %s\n",pos.current_position);
+                    // check the next position
+                    // confirm one can continue moving forward in the row
+                    if ( i-2 >= 0 )
+                    {
+                        if ( !strcmp(positions[i-2][row_index],"99") || !strcmp(positions[i-2][row_index],"00"))
+                            {
+                                pos = Column_Transversion(pos);
+                                // printf("No way\n");
+                            }
+                    }
                     break;
-                }
             }
 
             // going right
+            // get the current position
             else if ( pos.current_position[1] > pos.destination[1])
             {
-                if ( !strcmp(positions[i+1][row_index],"99") || !strcmp(positions[i+1][row_index],"00"))
-                {
-                    printf("No way\n");
-                }
-                else
-                {
-                printf("HAAA");
-                    printf("forward\n");
-                    strcpy( pos.current_position,  positions[i+1][row_index]);
-                    break;
-                }
+                printf("forward\n");
+                strcpy( pos.current_position,  positions[i+1][row_index]);
 
+                // check the next position
+                if ( i + 2 < 4 )
+                {
+                    if ( !strcmp(positions[i+2][row_index],"99") || !strcmp(positions[i+2][row_index],"00"))
+                    {
+                        pos = Column_Transversion(pos);
+                    }
+                }
+                break;
             }
         }
-        printf("position %s",pos.current_position);
+        // printf("position %s",pos.current_position);
         // position
     }
+    return pos;
+}
+
+struct travel Row_Transversion (struct travel pos)
+{
+
+    if ( pos.previous_position[0] < pos.current_position[0] )
+    {
+        if ( pos.current_position[1] < pos.destination[1] )
+        {
+            /* e.g d3 -> d4  from c3*/
+            printf("Turn left\n");
+            printf("Move to the next junction\n");
+            /*  move forward to junction    */
+            pos = Forward_Row_Update(pos);
+            printf("previousss %s, new  %s destination %s\n",pos.previous_position,pos.current_position,pos.destination);
+
+        }
+        else if ( pos.current_position[1] > pos.destination[1] )
+        {
+            /* e.g d3 to d2 from c3*/
+            printf("Turn right \n");
+            printf("Move to the next junction\n");
+            pos = Forward_Row_Update(pos);
+            printf("previousss %s, new  %s destination %s\n",pos.previous_position,pos.current_position,pos.destination);
+            /*  move forward to junction    */
+
+        }
+    }
+    else if ( pos.previous_position[0] >  pos.current_position[0] )
+    {
+        if ( pos.current_position[1] > pos.destination[1] )
+        {
+            /* e.g C2 -> C1  from D2*/
+            printf("Turn left\n");
+            printf("Move to the next junction\n");
+            /*  move forward to junction    */
+            pos = Forward_Row_Update(pos);
+            printf("previousss %s, new  %s destination %s\n",pos.previous_position,pos.current_position,pos.destination);
+
+        }
+        else if ( pos.current_position[1] < pos.destination[1] )
+        {
+            /* e.g c2 to c3 from d2*/
+            printf("Turn rightssss \n");
+            printf("Move to the next junction\n");
+            pos = Forward_Row_Update(pos);
+            printf("previousss %s, new  %s destination %s\n",pos.previous_position,pos.current_position,pos.destination);
+
+            /*  move forward to junction    */
+
+        }
+    }
+    else
+    {
+        // forward runs
+        printf("Forward ot of junction\n");
+        printf("Move to the next junction\n");
+        pos = Forward_Row_Update(pos);
+        printf("previoussS %s, new  %s destination %s\n",pos.previous_position,pos.current_position,pos.destination);
+    }
+// }
+    return pos;
+}
+
+struct travel Column_Transversion (struct travel pos)
+{
+        // check from where the bot is
+    if ( pos.previous_position[1] > pos.current_position[1])
+    {
+        if (pos.current_position[0] > pos.destination[0])
+        {
+            // if column id is greater turn the right direction
+            printf("Turn right\n");
+            printf("Move to the next junction\n");
+            // Line_Following();
+        }
+        else if ( pos.current_position[0] < pos.destination[0] )
+        {
+            printf("Turn left\n");
+            printf("Move to the next junction\n");
+            /*  Move forward to next junction */
+            // Line_Following();
+        }
+        
+        pos = Update_Forward_Position(pos);
+    }
+    else if ( pos.previous_position[1] < pos.current_position[1] )
+    {
+        if (pos.current_position[0] < pos.destination[0])
+        {
+            printf("Turn right\n");
+            printf("Move to the next junction\n");
+            /*  Move forward to next junction */
+            // Line_Following();
+        }
+        else if ( pos.current_position[0] > pos.destination[0] )
+        {
+            printf("Turn left\n");
+            printf("Move to the next junction\n");
+            /*  Move forward to next junction */
+            // Line_Following();
+        }
+        
+        pos = Update_Forward_Position(pos);
+    }
+    else
+    {
+        printf("forward out of junction\n");
+        printf("Move to the next junction\n");
+        pos = Update_Forward_Position(pos);
+    }                
+
+    return pos;
+}
+
+
+struct travel New_Navigation(struct travel pos)
+{
+
+    while( strcmp(pos.current_position,pos.destination) )
+    {
+        if ( !strcmp(pos.current_position,"A0") && !strcmp(pos.previous_position,"A0") )
+        {
+            printf("Start Position\n");
+            printf("move forward\n");
+            // Line_Following();
+            strcpy(pos.current_position,"A1");
+            printf("Now at %s\n",pos.current_position);
+        }
+        else if (pos.current_position[1] == pos.destination[1])
+        {
+            printf("Moving through columns\n\n");
+            pos = Column_Transversion(pos);
+        }
+        else if (pos.current_position[0] == pos.destination[0] || pos.current_position[0] != pos.destination[0])
+        {
+            printf("Moving through rows\n\n");
+            pos = Row_Transversion(pos);
+        }
+    }
+    printf("Arrived\n");
     return pos;
 }

@@ -22,12 +22,14 @@ struct travel
  char* positions[4][4] = {
     // rows defination are alpabetical
     // columns are numerical
-    {"99","B4","C4","D4"},
+/*    0     1    2    3 */
+    {"99","B4","C4","D4"}, 
     {"99","B3","C3","D3"},
     {"A2","B2","C2","D2"},
     {"A1","00","C1","D1"},
 };
 
+char* Next_position[3];
 // define procedure array for the checkers
 // Engine,w1,w2,w3,w4,cabin,trailer
 bool procedure[7] = {false,false,false,false,false,false,false};
@@ -46,16 +48,17 @@ struct travel Lower_Left_Wheel(struct travel pos);
 struct travel navigation(struct travel pos);
 struct travel Update_Forward_Position(struct travel pos);
 struct travel Forward_Row_Update (struct travel pos);
-// struct travel Row_Transversion (struct travel pos);
-// struct travel Column_Transversion (struct travel pos);
+struct travel Row_Transversion (struct travel pos);
+struct travel Column_Transversion (struct travel pos);
+struct travel New_Navigation(struct travel pos);
 // struct travel nav(struct travel pos);
 
 /*  functions that involve moving the bot */
 void Stop_Motors();
-void Move_Forward();
-void reverse();
-void Go_right();
-void Go_left();
+void Move_Forward(int pwm_speed);
+void reverse(int pwm_speed);
+void Go_right(int pwm_speed);
+void Go_left(int pwm_speed);
 void Turn_Right();
 void Turn_left();
 void Read_InfraRed();

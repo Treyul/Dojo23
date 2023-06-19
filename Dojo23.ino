@@ -9,23 +9,24 @@
 #include<stdlib.h>
 
 void setup()
-{
-//   #define leftCorner 10
-// #define left_s 11
-// #define right_s 12
-// #define rightCorner 13
-  Serial.begin(9600);
+{ 
+  // set up ir pins for readings
   pinMode(13,INPUT);
   pinMode(12,INPUT);
   pinMode(11,INPUT);
   pinMode(10,INPUT);
-  // pinMode(A1,INPUT);
+  
+  // set up for motor control
   pinMode(en1, OUTPUT);
   pinMode(in1, OUTPUT);
   pinMode(in2, OUTPUT);
   pinMode(in3, OUTPUT);
   pinMode(in4, OUTPUT);
   pinMode(en2, OUTPUT);
+
+  // Serial monitor printing
+   Serial.begin(9600);
+   
   // strcpy(position.current_position,"A0");
   // strcpy(position.previous_position,"A0");
 }
