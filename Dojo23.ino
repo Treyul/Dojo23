@@ -11,10 +11,12 @@
 void setup()
 { 
   // set up ir pins for readings
-  pinMode(13,INPUT);
+  pinMode(A0,INPUT);
+  pinMode(A1,INPUT);
+  pinMode(A2,INPUT);
+  pinMode(A3,INPUT);
+  pinMode(7,INPUT);
   pinMode(12,INPUT);
-  pinMode(11,INPUT);
-  pinMode(10,INPUT);
   
   // set up for motor control
   pinMode(en1, OUTPUT);
@@ -35,20 +37,30 @@ void setup()
 void loop() 
 {
     Serial.println("time_spent");
-    // Read_InfraRed();
-    // Follow_line();
-    Line_Following();
-    // Turn_left();
-    // Go_left(130);
-    // Go_right(130);        
-    // delay(6000);
-    // Turn_Right();
-    // delay(6000);
-    
-    // Move_Forward(120);
-    // delay(2000);
-    // Stop_Motors();
-    // delay(2000);
+
+    Move_to_the_next_Junction();
+    Turn_Right();
+    Move_to_the_next_Junction();
+    Turn_left();
+    Move_to_the_next_Junction();
+    Turn_left();
+    Move_to_the_next_Junction();
+    Turn_left();
+    Move_to_the_next_Junction();
+    Turn_Right();
+    Move_to_the_next_Junction();
+    Turn_left();
+    Move_to_the_next_Junction();
+    Turn_left();
+    Move_to_the_next_Junction();
+    Turn_left();
+
+    // Move_to_the_next_Junction();   
+    // Go_left(110);
+    // Go_Right_T(130);
+    // Go_Right_turn(pwm2);
+    // Go_Left_turn(pwm2);
+
     
     // clock_t begin = clock();
     // run through the array of checkers
@@ -69,16 +81,7 @@ void loop()
     //         if (i == 6){}
     //     }
     // }
-    // Move_Forward();
-    // delay(2000);
-    // reverse();
-    // delay(2000);
-    // Go_right();
-    // delay(2000);
-    // Serial.println("going left");
-    // Go_left();
-    
-    // delay(2000);
+
 
     // clock_t end = clock();
     // double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;

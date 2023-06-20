@@ -1,16 +1,72 @@
 #include"motor_variables.h"
 
-void Line_Following()
-{
 
-    while ( !Far_Right && !Far_Left )
+void Move_to_the_next_Junction()
+{
+    bool Junction = false;
+
+    while ( !Junction )
     {
-        // take the infra red readings
+
+        if ( Far_Right || Far_Left )
+        {
+            Junction = true;
+            Serial.println(Far_Right);
+            Serial.println(Far_Left);        
+        }
+        Serial.print(Junction);
+        Serial.println("Moving");
+        Line_Following();
+    }
+
+    // stop the motors when a junction is reached
+    Serial.println("Arrived at  Junction");
+    // Stop_Motors();
+    // delay(2000);
+}
+
+void Move_out_of_Junction()
+{
+    // Line_Following();
+    bool Passed = false;
+
+    while ( !Passed )
+    {
+
+        if ( Back_right || Back_left )
+        {
+            Passed = true;
+        }
+
         Read_InfraRed();
 
-        if ( !Left && !Right)
+        // Move within limits
+        if ( Far_Left && !Far_Right )
         {
-            Move_Forward(pwm2);
+            Go_left(pwm2);
+        }
+        else if ( Far_Right && !Far_Left )
+        {
+            Go_right(pwm2);
+        }
+        else
+        {
+          Move_Forward(pwm2);
+        }
+    }
+
+    // Stop_Motors();
+    // delay(2000);
+}
+
+void Line_Following()
+{
+        // take the infra-red readings
+        Read_InfraRed();
+
+        if ( !Left && !Right || Left && Right)
+        {
+            Move_Forward(pwm);
         }
         else if ( Left && !Right )
         {
@@ -24,14 +80,9 @@ void Line_Following()
         }
         else
         {
-            Move_Forward(pwm2);
+            Move_Forward(pwm);
         }
-    }
-
-    // stop the motors when a junction is reached
-    Stop_Motors();
 }
-// }
 
 void Stop_Motors()
 {
@@ -82,56 +133,72 @@ void Go_left(int pwm_speed)
     digitalWrite(in4, LOW);
 }
 
+void Go_Left_turn(int pwm_speed)
+{
+    analogWrite(en1, pwm_speed);
+    analogWrite(en2, pwm_speed);
+    digitalWrite(in1, LOW);
+    digitalWrite(in2, LOW);
+    digitalWrite(in3, HIGH);
+    digitalWrite(in4, LOW);
+}
+
+void Go_Right_turn(int pwm_speed)
+{
+    analogWrite(en1, pwm_speed);
+    analogWrite(en2, pwm_speed);
+    digitalWrite(in1, HIGH);
+    digitalWrite(in2, LOW);
+    digitalWrite(in3, LOW);
+    digitalWrite(in4, LOW);
+}
+
 void Turn_Right()
 {
+    Move_out_of_Junction();
     /*  Ensure that the last ir in that side has reached a line    */
-    while ( Far_Right )
+    while ( !Far_Right )
     {
-        Go_right(pwm2);
+        Go_Right_turn(pwm2);
         Read_InfraRed();
     }
 
-    while ( !Back_Fin && !Far_Right )
+    while ( !Right )
     {
-        Go_right(pwm2);
+        Go_Right_turn(pwm2);
         Read_InfraRed();
-        // Serial.println("Turning.....");
-        // Serial.print("right is ");
-        // Serial.println(Far_Right?"on line":"Not in line");
-        // Serial.print("tail is ");
-        // Serial.println(Back_Fin?"on line":"Not in line");
-        // Back_Fin = digitalRead(8);
     }
+
+    Read_InfraRed();
+    // Stop_Motors();
+    // delay(2000);
+    return;
     
 }
 
 void Turn_left()
 {
-    while ( Far_Right )
+    Move_out_of_Junction();
+    
+    while ( !Far_Left )
     {
-        Go_left(pwm2);
+      
+        Go_Left_turn(pwm2);
         Read_InfraRed();
+        Serial.println("Going far left");
     }
+    Serial.println("Next....");
+    // Stop_Motors();
+    // delay(2000);
 
-    while (/* !Back_Fin &&*/ !Far_Right )
+    while ( !Left )
     {
-        Go_left(pwm2);
+        Go_Left_turn(pwm2);
         Read_InfraRed();
-        // Serial.println("Turning.....");
-        // Serial.print("right is ");
-        // Serial.println(Far_Right?"on line":"Not in line");
-        // Serial.print("tail is ");
-        // Serial.println(Back_Fin?"on line":"Not in line");
-        // Back_Fin = digitalRead(8);
+
     }
-    if ( Far_Right )
-    {
-        // Serial.println("Reached end.....");
-        while ( !Right )
-        {
-        // Serial.println("readjustment....");
-        Go_right(pwm2);
-        Read_InfraRed();
-        }
-    }
+    // Read_InfraRed();
+    // Stop_Motors();
+    // delay(2000);
+    return;
 }

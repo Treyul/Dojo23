@@ -2,7 +2,7 @@
 #include<math.h>
 #include<string.h>
 #include"variables.h"
-// #include"movements.h"
+#include"movements.h"
 
 // function for assembly of engine
 struct travel Engine_assembly(struct travel pos)

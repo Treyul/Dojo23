@@ -6,23 +6,17 @@ int speed = 180;
 
 // init the motor with the pin numbers
 // Left motor
-#define en1 8
-#define in1 9
-#define in2 10
+#define en1  46
+#define in1  42 
+#define in2  40
 
 // Right motor
-#define en2 13 
-#define in3 11
-#define in4 12
+#define en2  44
+#define in3  50
+#define in4  48
 
-// initialize variables to store the ir readings
-/*  A5  Far_Left light purple
- *  A4      black -> green  purple
- *  A3
- *  A2
- *  A1  Far_Right
- */ 
-int Far_Right,Right,Middle,Left,Far_Left,Back_Fin;
+
+int Far_Right,Right,Middle,Left,Far_Left,Back_left,Back_right;
 
 // define movement functions
 void Read_InfraRed()
@@ -31,15 +25,17 @@ void Read_InfraRed()
     * 0 ->  Not on line
     * 1 ->  On line
     */
-  Back_Fin = digitalRead(7);
-  Far_Right = digitalRead(6);
-  Right = digitalRead(5);
-  Left = digitalRead(4); 
-  Far_Left =digitalRead(9);
+  // Back_Fin = digitalRead(7);
+  Back_left = digitalRead(7);
+  Back_right = digitalRead(12);
+  Far_Right = digitalRead(A0);
+  Right = digitalRead(A1);
+  Left = digitalRead(A2); 
+  Far_Left =digitalRead(A3);
 
-  Serial.print(Far_Right);
-  Serial.print(Right);
+  // Serial.print(Far_Right);
+  // Serial.print(Right);
 // //   Serial.print(Middle);
-  Serial.println(Left);
-//   Serial.println(Far_Left);
+  // Serial.println(Left);
+  Serial.println(Far_Left);
 }
