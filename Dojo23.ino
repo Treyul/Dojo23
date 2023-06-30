@@ -4,9 +4,9 @@
  * add 8 segment for displaying current position
 */
 #include<string.h>
-// #include<time.h>
 #include "functions.h"
 #include<stdlib.h>
+// #include<time.h>
 
 void setup()
 { 
@@ -17,6 +17,8 @@ void setup()
   pinMode(A3,INPUT);
   pinMode(7,INPUT);
   pinMode(12,INPUT);
+  pinMode(2,INPUT);
+  pinMode(3,INPUT);
   
   // set up for motor control
   pinMode(en1, OUTPUT);
@@ -26,40 +28,45 @@ void setup()
   pinMode(in4, OUTPUT);
   pinMode(en2, OUTPUT);
 
+  // set up for ultra sonic sensor
+  pinMode(trigger, OUTPUT);
+  pinMode(echo, INPUT_PULLUP);
+
   // Serial monitor printing
    Serial.begin(9600);
    
-  // strcpy(position.current_position,"A0");
-  // strcpy(position.previous_position,"A0");
+  strcpy(position.current_position,"A0");
+  strcpy(position.previous_position,"A0");
 }
 
 
 void loop() 
 {
     Serial.println("time_spent");
+    // Line_Following();
+// Move_Forward(pwm);
+  // Reverse_Line_Following();
+    position = Engine_assembly(position);
+    // Stop_Motors();
+    // delay(2000);
+    position = Rack_assembly(position);
+    position = Cabin_assembly(position);
+    strcpy(position.destination,"C3");
+    position = New_Navigation(position);
+    // Stop_Motors();
+    // delay(2000);
+    strcpy(position.destination,"B3");
+    position = New_Navigation(position);
+    strcpy(position.destination,"B2");
+    position = New_Navigation(position);
+    strcpy(position.destination,"A2");
+    position = New_Navigation(position);
+    strcpy(position.destination,"A1");
+    position = New_Navigation(position);
+    Stop_Motors();
+    delay(100000);
 
-    Move_to_the_next_Junction();
-    Turn_Right();
-    Move_to_the_next_Junction();
-    Turn_left();
-    Move_to_the_next_Junction();
-    Turn_left();
-    Move_to_the_next_Junction();
-    Turn_left();
-    Move_to_the_next_Junction();
-    Turn_Right();
-    Move_to_the_next_Junction();
-    Turn_left();
-    Move_to_the_next_Junction();
-    Turn_left();
-    Move_to_the_next_Junction();
-    Turn_left();
-
-    // Move_to_the_next_Junction();   
-    // Go_left(110);
-    // Go_Right_T(130);
-    // Go_Right_turn(pwm2);
-    // Go_Left_turn(pwm2);
+        // Reverse_Line_Following();  
 
     
     // clock_t begin = clock();
@@ -72,7 +79,7 @@ void loop()
     //             position = Engine_assembly(position);
     //         }
     //         if (i == 1){
-    //             // position = 
+    //             // position = Rack_assembly(position);
     //         }
     //         if (i == 2){}
     //         if (i == 3){}
