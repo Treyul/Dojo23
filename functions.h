@@ -121,7 +121,7 @@ struct travel Rack_assembly(struct travel pos)
     return pos;
 }
 
-struct travel navigation(struct travel pos)
+__attribute__((deprecated)) struct travel navigation(struct travel pos)
 {
     // move the bot as long as the position is not the destination
     while( strcmp(pos.current_position,pos.destination) )
