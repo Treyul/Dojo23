@@ -30,6 +30,7 @@ struct travel
 };
 
 char* Next_position[3];
+
 // define procedure array for the checkers
 // Engine,w1,w2,w3,w4,cabin,trailer
 bool procedure[7] = {false,false,false,false,false,false,false};
@@ -76,6 +77,10 @@ void Move_out_of_Junction();
 float Ultra_Sonic_reading();
 void calibration();
 
-// functios involing the movement of the arm
-void Calculate_Angles(int x, int y);
-int Check_validity(int x,int y)
+// functions involing the movement of the arm
+int* Calculate_Angles(int distance, int y, int ST_ANGLE = 404);
+void Move_To_target(int* angle_array );
+int Check_validity(int x,int y);
+void Open_Claws();
+void Close_Claws(int Right, int left);
+void Pick_Object();

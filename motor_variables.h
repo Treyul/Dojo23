@@ -1,8 +1,15 @@
-#include<Arduino.h>
-
 #define pwm 255
 #define pwm2 130
 
+// define pin number of Ir sensors
+#define LEFT_IR 
+#define FAR_LEFT_IR A3
+#define RIGHT_IR
+#define FAR_RIGHT_IR
+#define MIDDLE_LEFT 2
+#define MIDDLE_RIGHT 3
+#define BACK_LEFT 5 
+#define BACK_RIGHT 4
 // init the motor with the pin numbers
 // Left motor
 #define en1   40
@@ -27,14 +34,14 @@ void Read_InfraRed()
     * 0 ->  Not on line
     * 1 ->  On line
     */
-  middle_left = digitalRead(2);
-  middle_right = digitalRead(3);
+  middle_left = digitalRead(MIDDLE_LEFT);
+  middle_right = digitalRead(MIDDLE_RIGHT);
 
-  Back_left = digitalRead(5);
-  Back_right = digitalRead(4);
+  Back_left = digitalRead(BACK_LEFT);
+  Back_right = digitalRead(BACK_RIGHT);
   
-  Far_Right = digitalRead(A0);
-  Right = digitalRead(A1);
-  Left = digitalRead(A2); 
-  Far_Left =digitalRead(A3);
+  Far_Right = digitalRead(FAR_RIGHT_IR);
+  Right = digitalRead(RIGHT_IR);
+  Left = digitalRead(LEFT_IR); 
+  Far_Left =digitalRead(FAR_LEFT_IR);
 }
