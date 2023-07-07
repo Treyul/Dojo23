@@ -9,11 +9,11 @@
 
 
 // defination of pins
-#define LEFTCLAW 4
-#define RIGHTCLAW A0
-#define WRIST 5
-#define ELBOW A2
-#define SHOULDER A1
+#define LEFTCLAW A4
+#define RIGHTCLAW A5
+#define WRIST A6
+#define ELBOW A7
+#define SHOULDER A8
 
 // define stepper pins
 #define Stepper_En1 8

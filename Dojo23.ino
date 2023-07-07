@@ -59,6 +59,7 @@ void loop()
 	// enable the steppers
 	digitalWrite(Stepper_En1, HIGH);
   digitalWrite(Stepper_En2, HIGH);
+  
 	Serial.println("time_spent");
 	int init[3] = {90,90,0};
 	Move_To_target(init);

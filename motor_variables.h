@@ -2,14 +2,14 @@
 #define pwm2 130
 
 // define pin number of Ir sensors
-#define LEFT_IR 
+#define LEFT_IR A3
 #define FAR_LEFT_IR A3
-#define RIGHT_IR
-#define FAR_RIGHT_IR
-#define MIDDLE_LEFT 2
-#define MIDDLE_RIGHT 3
-#define BACK_LEFT 5 
-#define BACK_RIGHT 4
+#define RIGHT_IR A3
+#define FAR_RIGHT_IR A3
+#define MIDDLE_LEFT 7
+#define MIDDLE_RIGHT 6
+#define BACK_LEFT 6 
+#define BACK_RIGHT 7
 // init the motor with the pin numbers
 // Left motor
 #define en1   40
